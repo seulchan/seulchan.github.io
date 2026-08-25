@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+
+import Base from "../../layouts/Base.astro";
+
+const thoughts = (await getCollection("thoughts"))
+  .filter((thought) => !thought.data.draft)
+  .sort(
+    (a, b) =>
+      b.data.date.getTime() -
+      a.data.date.getTime(),
+  );
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+---
+
+<Base title="Thoughts">
+  <header class="page-header">
+    <h1>Thoughts</h1>
+
+    <p class="page-description">
+      Small thoughts that don't need to become essays.
+    </p>
+  </header>
+
+  <div class="post-list">
+    {
+      thoughts.map((thought) => (
+        <a
+          class="post-item"
+          href={`/thoughts/${thought.id}/`}
+        >
+          <span class="post-item-title">
+            {thought.data.title}
+          </span>
+
+          <time datetime={thought.data.date.toISOString()}>
+            {formatDate(thought.data.date)}
+          </time>
+        </a>
+      ))
+    }
+  </div>
+</Base>

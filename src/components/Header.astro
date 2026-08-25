@@ -1,0 +1,44 @@
+---
+const path = Astro.url.pathname;
+
+const isActive = (href: string) =>
+  path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+  <a class="site-name" href="/">
+    Nahc
+  </a>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <a
+      href="/notes/"
+      aria-current={isActive("/notes") ? "page" : undefined}
+    >
+      Notes
+    </a>
+
+    <a
+      href="/thoughts/"
+      aria-current={isActive("/thoughts") ? "page" : undefined}
+    >
+      Thoughts
+    </a>
+
+    <a
+      href="/about/"
+      aria-current={isActive("/about") ? "page" : undefined}
+    >
+      About
+    </a>
+
+    <button
+      class="theme-toggle"
+      type="button"
+      aria-label="Toggle color theme"
+      title="Toggle color theme"
+    >
+      ◐
+    </button>
+  </nav>
+</header>

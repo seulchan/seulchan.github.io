@@ -1,0 +1,65 @@
+---
+import Base from "./Base.astro";
+
+interface Props {
+  title: string;
+  date: Date;
+  eyebrow?: string;
+  hours?: number;
+  backHref: string;
+  backLabel: string;
+}
+
+const {
+  title,
+  date,
+  eyebrow,
+  hours,
+  backHref,
+  backLabel,
+} = Astro.props;
+
+const formattedDate = date.toLocaleDateString("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+---
+
+<Base title={title}>
+  <article class="article">
+    <header class="article-header">
+      {
+        eyebrow && (
+          <p class="eyebrow">
+            {eyebrow}
+          </p>
+        )
+      }
+
+      <h1>{title}</h1>
+
+      <p class="article-meta">
+        <time datetime={date.toISOString()}>
+          {formattedDate}
+        </time>
+
+        {
+          hours !== undefined && (
+            <span> · {hours}h</span>
+          )
+        }
+      </p>
+    </header>
+
+    <div class="article-body">
+      <slot />
+    </div>
+
+    <footer class="article-footer">
+      <a href={backHref}>
+        ← {backLabel}
+      </a>
+    </footer>
+  </article>
+</Base>

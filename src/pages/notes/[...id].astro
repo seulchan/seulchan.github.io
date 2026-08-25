@@ -1,0 +1,42 @@
+---
+import {
+  getCollection,
+  render,
+  type CollectionEntry,
+} from "astro:content";
+
+import Post from "../../layouts/Post.astro";
+
+export async function getStaticPaths() {
+  const notes = (await getCollection("notes"))
+    .filter((note) => !note.data.draft);
+
+  return notes.map((note) => ({
+    params: {
+      id: note.id,
+    },
+    props: {
+      note,
+    },
+  }));
+}
+
+interface Props {
+  note: CollectionEntry<"notes">;
+}
+
+const { note } = Astro.props;
+
+const { Content } = await render(note);
+---
+
+<Post
+  title={note.data.title}
+  date={note.data.date}
+  hours={note.data.hours}
+  eyebrow={`STILL FIGURING IT OUT · DAY ${note.data.day}`}
+  backHref="/notes/"
+  backLabel="Notes"
+>
+  <Content />
+</Post>

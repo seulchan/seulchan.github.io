@@ -1,0 +1,40 @@
+---
+import {
+  getCollection,
+  render,
+  type CollectionEntry,
+} from "astro:content";
+
+import Post from "../../layouts/Post.astro";
+
+export async function getStaticPaths() {
+  const thoughts = (await getCollection("thoughts"))
+    .filter((thought) => !thought.data.draft);
+
+  return thoughts.map((thought) => ({
+    params: {
+      id: thought.id,
+    },
+    props: {
+      thought,
+    },
+  }));
+}
+
+interface Props {
+  thought: CollectionEntry<"thoughts">;
+}
+
+const { thought } = Astro.props;
+
+const { Content } = await render(thought);
+---
+
+<Post
+  title={thought.data.title}
+  date={thought.data.date}
+  backHref="/thoughts/"
+  backLabel="Thoughts"
+>
+  <Content />
+</Post>

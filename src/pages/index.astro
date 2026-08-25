@@ -1,17 +1,104 @@
 ---
+import { getCollection } from "astro:content";
 
+import Base from "../layouts/Base.astro";
+
+const notes = (await getCollection("notes"))
+  .filter((note) => !note.data.draft)
+  .sort((a, b) => b.data.day - a.data.day);
+
+const thoughts = (await getCollection("thoughts"))
+  .filter((thought) => !thought.data.draft)
+  .sort(
+    (a, b) =>
+      b.data.date.getTime() -
+      a.data.date.getTime(),
+  );
+
+const latestNotes = notes.slice(0, 3);
+const latestThoughts = thoughts.slice(0, 3);
+
+const currentDay = notes[0]?.data.day ?? 0;
+
+const totalHours =
+  Math.round(
+    notes.reduce(
+      (total, note) => total + note.data.hours,
+      0,
+    ) * 10,
+  ) / 10;
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+  <section class="section">
+    <div class="section-heading">
+      <h2>Notes</h2>
+
+      {
+        notes.length > 0 && (
+          <p class="progress-label">
+            Still Figuring It Out · Day {currentDay} · {totalHours}h
+          </p>
+        )
+      }
+    </div>
+
+    <div class="post-list">
+      {
+        latestNotes.map((note) => (
+          <a
+            class="post-item"
+            href={`/notes/${note.id}/`}
+          >
+            <span class="post-item-title">
+              Day {note.data.day} — {note.data.title}
+            </span>
+
+            <time datetime={note.data.date.toISOString()}>
+              {formatDate(note.data.date)}
+            </time>
+          </a>
+        ))
+      }
+    </div>
+
+    <a class="more-link" href="/notes/">
+      All notes →
+    </a>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>Thoughts</h2>
+    </div>
+
+    <div class="post-list">
+      {
+        latestThoughts.map((thought) => (
+          <a
+            class="post-item"
+            href={`/thoughts/${thought.id}/`}
+          >
+            <span class="post-item-title">
+              {thought.data.title}
+            </span>
+
+            <time datetime={thought.data.date.toISOString()}>
+              {formatDate(thought.data.date)}
+            </time>
+          </a>
+        ))
+      }
+    </div>
+
+    <a class="more-link" href="/thoughts/">
+      All thoughts →
+    </a>
+  </section>
+</Base>

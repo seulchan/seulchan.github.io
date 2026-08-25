@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+
+import Base from "../../layouts/Base.astro";
+
+const notes = (await getCollection("notes"))
+  .filter((note) => !note.data.draft)
+  .sort((a, b) => b.data.day - a.data.day);
+
+const currentDay = notes[0]?.data.day ?? 0;
+
+const totalHours =
+  Math.round(
+    notes.reduce(
+      (total, note) => total + note.data.hours,
+      0,
+    ) * 10,
+  ) / 10;
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+---
+
+<Base title="Notes">
+  <header class="page-header">
+    <h1>Notes</h1>
+
+    <p class="page-description">
+      A record of what I'm learning by building things.
+    </p>
+
+    {
+      notes.length > 0 && (
+        <p class="progress-label">
+          Still Figuring It Out · Day {currentDay} · {totalHours}h
+        </p>
+      )
+    }
+  </header>
+
+  <div class="post-list">
+    {
+      notes.map((note) => (
+        <a
+          class="post-item"
+          href={`/notes/${note.id}/`}
+        >
+          <span class="post-item-title">
+            Day {note.data.day} — {note.data.title}
+          </span>
+
+          <time datetime={note.data.date.toISOString()}>
+            {formatDate(note.data.date)}
+          </time>
+        </a>
+      ))
+    }
+  </div>
+</Base>
