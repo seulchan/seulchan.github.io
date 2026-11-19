@@ -5,10 +5,10 @@ export async function GET(context) {
   const notes = (await getCollection("notes"))
     .filter((note) => !note.data.draft)
     .map((note) => ({
-      title: `Day ${note.data.day} — ${note.data.title}`,
+      title: note.data.title,
       pubDate: note.data.date,
       link: `/notes/${note.id}/`,
-      description: `Still Figuring It Out · Day ${note.data.day} · ${note.data.hours}h`,
+      description: "Still Figuring It Out",
     }));
 
   const thoughts = (await getCollection("thoughts"))

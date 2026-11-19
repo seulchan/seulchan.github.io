@@ -7,16 +7,6 @@ const notes = (await getCollection("notes"))
   .filter((note) => !note.data.draft)
   .sort((a, b) => b.data.day - a.data.day);
 
-const currentDay = notes[0]?.data.day ?? 0;
-
-const totalHours =
-  Math.round(
-    notes.reduce(
-      (total, note) => total + note.data.hours,
-      0,
-    ) * 10,
-  ) / 10;
-
 const formatDate = (date: Date) =>
   date.toLocaleDateString("en-US", {
     month: "short",
@@ -35,7 +25,7 @@ const formatDate = (date: Date) =>
     {
       notes.length > 0 && (
         <p class="progress-label">
-          Still Figuring It Out · Day {currentDay} · {totalHours}h
+          Still Figuring It Out
         </p>
       )
     }

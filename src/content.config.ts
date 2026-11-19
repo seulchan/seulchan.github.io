@@ -9,10 +9,10 @@ const notes = defineCollection({
   }),
 
   schema: z.object({
+    day: z.number().int().positive(),
     title: z.string(),
     date: z.coerce.date(),
-    day: z.number().int().positive(),
-    hours: z.number().nonnegative(),
+    minutes: z.number().int().nonnegative(),
     draft: z.boolean().default(false),
   }),
 });

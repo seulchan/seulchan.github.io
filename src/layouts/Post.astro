@@ -5,7 +5,6 @@ interface Props {
   title: string;
   date: Date;
   eyebrow?: string;
-  hours?: number;
   backHref: string;
   backLabel: string;
 }
@@ -14,7 +13,6 @@ const {
   title,
   date,
   eyebrow,
-  hours,
   backHref,
   backLabel,
 } = Astro.props;
@@ -43,12 +41,6 @@ const formattedDate = date.toLocaleDateString("en-US", {
         <time datetime={date.toISOString()}>
           {formattedDate}
         </time>
-
-        {
-          hours !== undefined && (
-            <span> · {hours}h</span>
-          )
-        }
       </p>
     </header>
 
