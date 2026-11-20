@@ -9,7 +9,7 @@ pattern: "Arrays & Hashing"
 idea: "Use a Hash Set to track seen elements for O(1) average-time lookup while iterating through the array once."
 complexity: "O(n) time, O(n) space"
 attempts:
-  - { date: 2026-11-20, result: solo }
+  - { date: 2026-11-20, result: hint }
 draft: false
 ---
 
