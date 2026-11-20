@@ -1,0 +1,121 @@
+---
+import {
+  getCollection,
+  render,
+  type CollectionEntry,
+} from "astro:content";
+
+import Post from "../../layouts/Post.astro";
+
+export async function getStaticPaths() {
+  const problems = (await getCollection("problems"))
+    .filter((problem) => !problem.data.draft);
+
+  return problems.map((problem) => ({
+    params: {
+      id: problem.id,
+    },
+    props: {
+      problem,
+    },
+  }));
+}
+
+interface Props {
+  problem: CollectionEntry<"problems">;
+}
+
+const { problem } = Astro.props;
+const { data } = problem;
+
+const { Content } = await render(problem);
+
+const hasCode = (problem.body ?? "").includes("```");
+
+const attempts = [...data.attempts].sort(
+  (a, b) => a.date.getTime() - b.date.getTime(),
+);
+
+const firstDate = attempts[0]?.date ?? new Date();
+
+const LABEL = {
+  solo: "✓ Solved on my own",
+  hint: "△ Solved with a hint",
+  fail: "✗ Didn't solve",
+} as const;
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+---
+
+<Post
+  title={data.title}
+  date={firstDate}
+  eyebrow={`NEETCODE 150 · ${data.category.toUpperCase()}`}
+  backHref="/coding/"
+  backLabel="Coding"
+>
+  <dl class="problem-facts">
+    <div>
+      <dt>Problem</dt>
+      <dd>
+        <a href={data.leetcode} target="_blank" rel="noopener">
+          LeetCode {data.number}
+        </a>
+        {" · "}<span class={`difficulty ${data.difficulty.toLowerCase()}`}>{data.difficulty}</span>
+      </dd>
+    </div>
+
+    {
+      data.pattern && (
+        <div>
+          <dt>Pattern</dt>
+          <dd>{data.pattern}</dd>
+        </div>
+      )
+    }
+
+    {
+      data.idea && (
+        <div>
+          <dt>Key idea</dt>
+          <dd>{data.idea}</dd>
+        </div>
+      )
+    }
+
+    {
+      data.complexity && (
+        <div>
+          <dt>Complexity</dt>
+          <dd>{data.complexity}</dd>
+        </div>
+      )
+    }
+  </dl>
+
+  {hasCode && <h2>My solution</h2>}
+
+  <Content />
+
+  {
+    attempts.length > 0 && (
+      <>
+        <h2>Attempts</h2>
+        <ul class="attempt-list">
+          {attempts.map((attempt) => (
+            <li class={attempt.result}>
+              <time datetime={attempt.date.toISOString()}>{formatDate(attempt.date)}</time>
+              {LABEL[attempt.result]}
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</Post>

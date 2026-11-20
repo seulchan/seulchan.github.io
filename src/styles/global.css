@@ -505,6 +505,177 @@ main {
 }
 
 /* =========================================================
+   Coding (NeetCode 150)
+   ========================================================= */
+
+.problem-group + .problem-group {
+  margin-top: 2.75rem;
+}
+
+.problem-group h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+
+  margin: 0 0 0.5rem;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.problem-group h2 span {
+  color: var(--muted);
+
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.problem-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.problem-item {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  gap: 1.5rem;
+
+  padding-block: 0.5rem;
+
+  border-top: 1px solid var(--border);
+
+  text-decoration: none;
+}
+
+.problem-item:first-child {
+  border-top: 0;
+}
+
+.problem-main {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.problem-item:hover .problem-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.problem-idea {
+  color: var(--muted);
+
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.problem-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+
+  font-size: 0.8rem;
+
+  white-space: nowrap;
+}
+
+.difficulty.easy {
+  color: #3f8f5b;
+}
+
+.difficulty.medium {
+  color: #b7791f;
+}
+
+.difficulty.hard {
+  color: #c2453d;
+}
+
+.attempt-marks {
+  display: inline-flex;
+  gap: 0.15rem;
+
+  min-width: 2.5rem;
+
+  color: var(--muted);
+
+  letter-spacing: 0.05em;
+}
+
+.attempt-marks .solo,
+.attempt-list .solo {
+  color: var(--accent);
+}
+
+.attempt-marks .fail,
+.attempt-list .fail {
+  color: #c2453d;
+}
+
+.problem-facts {
+  display: grid;
+  gap: 0.6rem;
+
+  margin: 0 0 2.5rem;
+
+  padding: 1rem 1.1rem;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.problem-facts div {
+  display: grid;
+
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+
+  gap: 1rem;
+}
+
+.problem-facts dt {
+  color: var(--muted);
+
+  font-size: 0.85rem;
+}
+
+.problem-facts dd {
+  margin: 0;
+}
+
+.attempt-list {
+  padding-left: 0 !important;
+
+  list-style: none;
+}
+
+.attempt-list time {
+  display: inline-block;
+
+  width: 7.5rem;
+
+  color: var(--muted);
+
+  font-size: 0.85rem;
+}
+
+@media (max-width: 560px) {
+  .problem-item {
+    gap: 0.75rem;
+  }
+
+  .problem-facts div {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}
+
+/* =========================================================
    Mobile
    ========================================================= */
 
