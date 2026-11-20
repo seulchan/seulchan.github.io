@@ -6,10 +6,10 @@ category: "Arrays & Hashing"
 difficulty: Easy
 leetcode: https://leetcode.com/problems/valid-anagram/
 pattern: "Arrays & Hashing"
-idea: "Use Hash Maps to count the frequency of each character in both strings in $O(n)$ time and compare whether the two frequency maps are identical"
+idea: "Use Hash Maps to count the frequency of each character in both strings in O(n) time and compare whether the two frequency maps are identical"
 complexity: "O(n) time, O(n) space"
 attempts:
-  - { date: 2026-11-20, result: solo }
+  - { date: 2026-11-20, result: hint }
 draft: false
 ---
 
